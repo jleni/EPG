@@ -117,7 +117,7 @@ class GenericAgent(object):
         return ppo_surr_loss
 
     def update(self, obs, acts, rews, dones, ppo_factor, inner_opt_freq):
-       
+        
         epg_rews = rews
         # Want to zero out rewards to the EPG loss function?
         # epg_rews = np.zeros_like(rews)
