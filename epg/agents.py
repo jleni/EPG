@@ -117,7 +117,7 @@ class GenericAgent(object):
         return ppo_surr_loss
 
     def update(self, obs, acts, rews, dones, ppo_factor, inner_opt_freq):
-
+       
         epg_rews = rews
         # Want to zero out rewards to the EPG loss function?
         # epg_rews = np.zeros_like(rews)
@@ -139,8 +139,8 @@ class GenericAgent(object):
         act_pad = np.zeros((self._buffer_size - acts.shape[0], acts.shape[1]), dtype=np.float32)
         pad = np.hstack([obs_pad, act_pad, rew_pad[:, None], auxs_pad[:, None], done_pad[:, None]])
         traj = np.vstack([pad, traj])
-        traj[:, obs.shape[1] + acts.shape[1]] = epg_rews
-        traj[:, -1] = dones
+        traj[0:len(epg_rews), obs.shape[1] + acts.shape[1]] = epg_rews
+        traj[0:len(dones), -1] = dones
 
         # Since the buffer length can be larger than the set of new samples, we truncate the
         # trajectories here for PPO.
